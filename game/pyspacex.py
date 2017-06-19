@@ -395,8 +395,7 @@ while running and homer:
         mobs_explode_snd.play()
         respawn_mob()
         # randomly yield bonus
-        #if random.random() > 0.95:
-        if random.random() > 0.1:
+        if random.random() > 0.95:
             shield = PowerUp(hit.rect.center)
             powerups.add(shield)
             all_sprites.add(shield)
@@ -452,6 +451,7 @@ while running and homer:
     # player dies if no more shields and explosion has finished playing
     if homer.lives == 0 and not explosion.alive():
         running = False
+        print(score)
 
     # Update screen
     all_sprites.update()
