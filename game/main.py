@@ -5,6 +5,7 @@ Inspired by the wonderful KidsCanCode videos on youtube
 https://www.youtube.com/channel/UCNaPQ5uLX5iIEHUCLmfAgKg
 '''
 import os
+import sys
 import glob
 import random
 import pygame as pg
@@ -15,6 +16,7 @@ from sprites.Explosion import Explosion
 from sprites.Mob import Mob
 from sprites.Player import Player
 from sprites.PowerUp import PowerUp
+from sprites.Starfield import Starfield
 
 
 class Game(object):
@@ -37,6 +39,7 @@ class Game(object):
         self.mobs = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
         self.powerups = pg.sprite.Group()
+        self.starfield = Starfield(200)
 
         self.player = Player(self)
         self.all_sprites.add(self.player)
@@ -61,15 +64,16 @@ class Game(object):
             # Loop condition to end the game
             if self.player.lives == 0 and not self.explosion.alive():
                 self.playing = False
-                print(self.score)
+                self.running = False
+                print("Score = {}".format(self.score))
 
     def draw(self):
         ''' draw objects on screen '''
         self.screen.fill((0, 0, 0))
-        self.screen.blit(self.background, self.background_rect)
+        self.starfield.draw_stars(self.screen)
         self.all_sprites.draw(self.screen)
         Game.draw_text(self.screen, "Score = {}".format(self.score),
-                       size=14,
+                       size=20,
                        pos=(400, 10))
         Game.draw_shield_bar(self.screen, 5, 5, self.player.shield)
         Game.draw_lives(self.screen, 700, 5,
@@ -135,8 +139,8 @@ class Game(object):
             if self.player.shield <= 0:
                 # explode the ship !
                 position = self.player.rect.center
-                explosion = Explosion(self, position, size='player')
-                self.all_sprites.add(explosion)
+                self.explosion = Explosion(self, position, size='player')
+                self.all_sprites.add(self.explosion)
                 self.ship_explode_snd.play()
                 self.player.lives -= 1
                 self.player.power_level = 1
@@ -307,3 +311,4 @@ if __name__ == "__main__":
         spacex.show_gameover()
 
     pg.quit()
+    sys.exit(0)
