@@ -3,6 +3,8 @@ import random
 from webcolors import name_to_rgb as rgb
 from webcolors import rgb_to_name as rgb2name
 
+from settings import *
+
 
 class Starfield(object):
     def __init__(self, number):
@@ -11,18 +13,18 @@ class Starfield(object):
         # create about 20% of tiny stars, 30% medium
         # and keep the rest bigger
         for n in range(int(number * 0.2)):
-            x = random.randrange(0, 800)
-            y = random.randrange(0, 600)
+            x = random.randrange(0, WIDTH)
+            y = random.randrange(0, HEIGHT)
             self.stars.append([x, y, rgb('grey')])
 
         for n in range(int(number * 0.3)):
-            x = random.randrange(0, 800)
-            y = random.randrange(0, 600)
+            x = random.randrange(0, WIDTH)
+            y = random.randrange(0, HEIGHT)
             self.stars.append([x, y, rgb('lightgrey')])
 
         for n in range(int(number * 0.5)):
-            x = random.randrange(0, 800)
-            y = random.randrange(0, 600)
+            x = random.randrange(0, WIDTH)
+            y = random.randrange(0, HEIGHT)
             self.stars.append([x, y, rgb('white')])
 
         random.shuffle(self.stars)
@@ -31,17 +33,17 @@ class Starfield(object):
         for star in self.stars:
             # move the star downward (y). Speed depends on its size
             if rgb2name(star[2]) == 'white':
-                speed = 0.4
-                size = 2.2
+                speed = BIG_STARS_SPEED
+                size = BIG_STARS_SIZE
             elif rgb2name(star[2]) == 'lightgrey':
-                speed = 0.2
-                size = 1.1
+                speed = MEDIUM_STARS_SPEED
+                size = MEDIUM_STARS_SIZE
             else:
-                speed = 0.1
-                size = 0.8
+                speed = SMALL_STARS_SPEED
+                size = SMALL_STARS_SIZE
 
             star[1] += speed
-            if star[1] > 600:
+            if star[1] > HEIGHT:
                 star[0] = random.randrange(0, 800)
                 star[1] = 0
 
