@@ -74,10 +74,18 @@ class Game(object):
         self.all_sprites.draw(self.screen)
         Game.draw_text(self.screen, "Score = {}".format(self.score),
                        size=20,
-                       pos=(400, 10))
+                       pos=(WIDTH / 2, 10))
         Game.draw_shield_bar(self.screen, 5, 5, self.player.shield)
         Game.draw_lives(self.screen, 700, 5,
                         self.player.lives, self.player_mini_img)
+        Game.draw_text(self.screen,
+                       "Velocity = {}".format(self.player.velocity),
+                       size=20,
+                       pos=(100, 50))
+        Game.draw_text(self.screen,
+                       "Position= {}".format(self.player.position),
+                       size=20,
+                       pos=(100, 100))
         self._detect_collisions()
 
     def _detect_collisions(self):
