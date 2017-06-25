@@ -64,8 +64,6 @@ class Game(object):
             # Loop condition to end the game
             if self.player.lives == 0 and not self.explosion.alive():
                 self.playing = False
-                self.running = False
-                print("Score = {}".format(self.score))
 
     def draw(self):
         ''' draw objects on screen '''
@@ -166,8 +164,7 @@ class Game(object):
         ''' manage events/interactions with users '''
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                self.playing = False
-                self.running = False
+                self.playing = self.running = False
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_SPACE:
                     self.player.shoot()
@@ -178,10 +175,42 @@ class Game(object):
         pg.display.flip()
 
     def show_title(self):
-        pass
+        self.screen.fill((0, 0, 0))
+        Game.draw_text(self.screen, "PySpaceX", 80, (WIDTH / 2, HEIGHT / 2))
+        Game.draw_text(self.screen,
+                       "Press any key to continue...",
+                       20,
+                       (WIDTH / 2, HEIGHT / 2 + 80))
+        pg.display.flip()
+        self._wait_kepress()
 
     def show_gameover(self):
-        pass
+        # don't bother showing gameover if wants to close the window
+        if not self.running:
+            return
+        self.screen.fill((0, 0, 0))
+        self.starfield.draw_stars(self.screen)
+        Game.draw_text(self.screen, "Game Over", 80, (WIDTH / 2, HEIGHT / 2))
+        Game.draw_text(self.screen,
+                       "Score = {}".format(self.score),
+                       size=40,
+                       pos=(WIDTH / 2, HEIGHT / 2 + 80))
+        Game.draw_text(self.screen,
+                       "Press any key to continue",
+                       20,
+                       (WIDTH / 2, HEIGHT - 20))
+        pg.display.flip()
+        self._wait_kepress()
+
+    def _wait_kepress(self):
+        waiting = True
+        while waiting:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    waiting = False
+                    self.running = False
+                elif event.type == pg.KEYDOWN:
+                    waiting = False
 
     def _load_gfx(self):
         ''' Load all game graphics '''
