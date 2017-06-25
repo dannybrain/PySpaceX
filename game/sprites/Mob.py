@@ -38,8 +38,9 @@ class Mob(pg.sprite.Sprite):
         self.rotate()
         self.rect.x += self.speedx
         self.rect.y += self.speedy
-        if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or \
-                self.rect.right > WIDTH + 20:
+        # check edges
+        if self.rect.bottom > HEIGHT or self.rect.right < 0 or \
+                self.rect.left > WIDTH:
             self.rect.x = random.randrange(WIDTH - self.rect.width)
             self.rect.y = random.randrange(-100, -40)
             self.speedy = random.randrange(1, 8)
